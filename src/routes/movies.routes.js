@@ -6,19 +6,24 @@ const router = express.Router();
 
 /**
  * @openapi
- * /health-check:
+ * /movies:
  *  get:
  *     tags:
- *     - Health-check
- *     description: Responds if the app is up and running
+ *     - Movies
+ *     summary: Get all movies
  *     responses:
  *       200:
- *         description: App is up and running
+ *         description: All movies from DB.
  *         content:
  *           application/json:
- *             example:
- *               "message": "App is up and running"
- *               "result": "OK"
+ *             schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Movie'
+ *       400:
+ *        $ref: '#/components/responses/400'
+ *       401:
+ *        $ref: '#/components/responses/401'
  */
 router.get('/', getMoviesHandler);
 

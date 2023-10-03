@@ -10,6 +10,7 @@ const router = express.Router();
  *  get:
  *     tags:
  *     - Health-check
+ *     summary: Checking app availability
  *     description: Responds if the app is up and running
  *     responses:
  *       200:
