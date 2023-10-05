@@ -45,9 +45,22 @@ export async function getMoviesHandler(req, res, next) {
 	try {
 		res.status(200).json({ message: 'Fetched movies successfully', result: mockedMovies });
 	} catch (error) {
-		if (!error.statusCode) {
-			error.statusCode = 500;
+		next(error);
+	}
+}
+
+export async function getMovieHandler(req, res, next) {
+	try {
+		const movieId = req.params.movieId;
+		const movie = mockedMovies.find((movie) => movie.id === movieId);
+		if (movie) {
+			res.status(200).json({ message: 'Fetched movie successfully', result: movie });
+		} else {
+			const error = new Error('Could not find movie.');
+			error.statusCode = 404;
+			throw error;
 		}
+	} catch (error) {
 		next(error);
 	}
 }
