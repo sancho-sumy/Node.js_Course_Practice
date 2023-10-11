@@ -1,8 +1,8 @@
-import express from 'express';
+import express, { Router } from 'express';
 
-import { getMoviesHandler, getMovieHandler } from '../controllers/movies.controllers.js';
+import { getMoviesHandler, getMovieHandler } from '../controllers/movies.controllers';
 
-const router = express.Router();
+const router: Router = express.Router();
 
 /**
  * @openapi
