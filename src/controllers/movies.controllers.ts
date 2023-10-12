@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { Error } from '../app';
+import { Movie } from '../interfaces';
 
-const mockedMovies = [
+const mockedMovies: Movie[] = [
     {
         id: '1',
         title: 'The Shawshank Redemption',
