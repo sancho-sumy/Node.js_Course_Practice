@@ -1,9 +1,9 @@
 import swaggerJsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+import swaggerUi, { SwaggerOptions } from 'swagger-ui-express';
 import logger from './logger.utils';
 import { Request, Response, Application } from 'express';
 
-const options = {
+const options: SwaggerOptions = {
     definition: {
         openapi: '3.0.0',
         info: {
@@ -34,7 +34,7 @@ const options = {
                 },
             },
         },
-        security: [
+        securits: [
             {
                 ApiKeyAuth: [],
             },

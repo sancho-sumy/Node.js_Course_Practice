@@ -1,6 +1,6 @@
-import logger from 'pino';
+import logger, { Logger } from 'pino';
 
-const log = logger({
+const log: Logger = logger({
     level: process.env.LOG_LEVEL ?? 'debug',
     transport: {
         target: 'pino-pretty',
