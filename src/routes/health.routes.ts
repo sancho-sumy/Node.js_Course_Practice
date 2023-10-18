@@ -1,8 +1,8 @@
-import express from 'express';
+import express, { Router } from 'express';
 
-import { getStatusHandler } from '../controllers/health.controllers.js';
+import { getStatusHandler } from '../controllers/health.controllers';
 
-const router = express.Router();
+const router: Router = express.Router();
 
 /**
  * @openapi
