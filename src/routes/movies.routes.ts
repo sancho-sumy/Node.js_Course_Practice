@@ -8,7 +8,7 @@ import {
     getMoviesHandler,
     updateMovieHandler,
 } from '../controllers';
-import { createMovieValidator, movieIdValidator, updateMovieValidator } from '../validators';
+import { movieIdValidator, movieValidator } from '../validators';
 
 export const router: Router = express.Router();
 
@@ -124,7 +124,7 @@ router.get('/genre/:genreName', findMoviesByGenreHandler);
  *       404:
  *        $ref: '#/components/responses/404'
  */
-router.post('/add', createMovieValidator, createMovieHandler);
+router.post('/add', movieValidator, createMovieHandler);
 
 /**
  * @openapi
@@ -160,7 +160,7 @@ router.post('/add', createMovieValidator, createMovieHandler);
  *       404:
  *        $ref: '#/components/responses/404'
  */
-router.put('/edit/:movieId', updateMovieValidator, updateMovieHandler);
+router.put('/edit/:movieId', movieIdValidator, movieValidator, updateMovieHandler);
 
 /**
  * @openapi

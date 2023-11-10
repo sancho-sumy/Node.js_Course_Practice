@@ -7,7 +7,7 @@ import {
     getGenresHandler,
     updateGenreHandler,
 } from '../controllers';
-import { createGenreValidator, genreIdValidator, updateGenreValidator } from '../validators';
+import { genreIdValidator, genreValidator } from '../validators';
 
 export const router: Router = express.Router();
 
@@ -93,7 +93,7 @@ router.get('/:genreId', genreIdValidator, getGenreHandler);
  *        $ref: '#/components/responses/404'
  */
 
-router.post('/add', createGenreValidator, createGenreHandler);
+router.post('/add', genreValidator, createGenreHandler);
 
 /**
  * @openapi
@@ -130,7 +130,7 @@ router.post('/add', createGenreValidator, createGenreHandler);
  *        $ref: '#/components/responses/404'
  */
 
-router.put('/edit/:genreId', updateGenreValidator, updateGenreHandler);
+router.put('/edit/:genreId', genreIdValidator, genreValidator, updateGenreHandler);
 
 /**
  * @openapi
