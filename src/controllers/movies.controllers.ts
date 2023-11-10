@@ -28,7 +28,7 @@ export async function createMovieHandler(req: Request, res: Response, next: Next
         validationCheck(req);
         const movie = await createMovie(req.body);
         logger.info('New movie created');
-        return res.status(201).send(movie);
+        return res.status(201).json({ message: `Movie successfully created`, result: movie });
     } catch (error: any) {
         next(error);
     }
@@ -39,7 +39,7 @@ export async function updateMovieHandler(req: Request, res: Response, next: Next
         validationCheck(req);
         const movie = await updateMovie(req.params.movieId, req.body);
         logger.info('The movie was updated');
-        return res.status(200).send(movie);
+        return res.status(200).json({ message: `Movie successfully updated`, result: movie });
     } catch (error: any) {
         next(error);
     }
