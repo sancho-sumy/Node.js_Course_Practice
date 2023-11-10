@@ -1,5 +1,3 @@
-import { omit } from 'lodash';
-
 import { CustomError, Movie } from '../interfaces';
 import { GenreModel, MovieModel } from '../models';
 
@@ -14,13 +12,13 @@ export async function getMovies() {
 
 export async function getMovie(movieId: string) {
     try {
-        const movie = await MovieModel.findById(movieId);
+        const movie = await MovieModel.findById(movieId, 'title description releaseDate genre');
         if (!movie) {
             const error: CustomError = new Error('Could not find movie.');
             error.statusCode = 404;
             throw error;
         }
-        return omit(movie.toJSON(), '__v', 'createdAt', 'updatedAt');
+        return movie;
     } catch (error: any) {
         throw error;
     }
@@ -29,7 +27,7 @@ export async function getMovie(movieId: string) {
 export async function createMovie(input: Movie) {
     try {
         const movie = await MovieModel.create(input);
-        return omit(movie.toJSON(), '__v', 'createdAt', 'updatedAt');
+        return movie;
     } catch (error: any) {
         throw new Error(error);
     }
@@ -37,7 +35,7 @@ export async function createMovie(input: Movie) {
 
 export async function updateMovie(movieId: string, { title, description, releaseDate, genre }: Movie) {
     try {
-        const movie = await MovieModel.findById(movieId);
+        const movie = await MovieModel.findById(movieId, 'title description releaseDate genre');
         if (!movie) {
             const error: CustomError = new Error('Could not find movie.');
             error.statusCode = 404;
@@ -48,7 +46,7 @@ export async function updateMovie(movieId: string, { title, description, release
         movie.releaseDate = releaseDate ?? movie.releaseDate;
         movie.genre = [...genre];
         await movie.save();
-        return omit(movie.toJSON(), '__v', 'createdAt', 'updatedAt');
+        return movie;
     } catch (error: any) {
         throw new Error(error);
     }
