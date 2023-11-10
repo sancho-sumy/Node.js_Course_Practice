@@ -6,7 +6,7 @@ import { GenreModel, MovieModel } from '../models';
 export async function getMovies() {
     try {
         const movies = await MovieModel.find();
-        return omit(movies, 'result');
+        return movies;
     } catch (error: any) {
         throw new Error(error);
     }
@@ -20,7 +20,7 @@ export async function getMovie(movieId: string) {
             error.statusCode = 404;
             throw error;
         }
-        return omit(movie.toJSON(), 'result');
+        return omit(movie.toJSON(), '__v', 'createdAt', 'updatedAt');
     } catch (error: any) {
         throw error;
     }
@@ -29,7 +29,7 @@ export async function getMovie(movieId: string) {
 export async function createMovie(input: Movie) {
     try {
         const movie = await MovieModel.create(input);
-        return omit(movie.toJSON(), 'result');
+        return omit(movie.toJSON(), '__v', 'createdAt', 'updatedAt');
     } catch (error: any) {
         throw new Error(error);
     }
@@ -48,7 +48,7 @@ export async function updateMovie(movieId: string, { title, description, release
         movie.releaseDate = releaseDate ?? movie.releaseDate;
         movie.genre = [...genre];
         await movie.save();
-        return omit(movie.toJSON(), 'result');
+        return omit(movie.toJSON(), '__v', 'createdAt', 'updatedAt');
     } catch (error: any) {
         throw new Error(error);
     }
@@ -63,7 +63,7 @@ export async function deleteMovie(movieId: string) {
             throw error;
         }
         await MovieModel.findByIdAndRemove(movieId);
-        return omit(movie.toJSON(), 'result');
+        return true;
     } catch (error: any) {
         throw error;
     }
@@ -84,7 +84,7 @@ export async function getMoviesByGenre(genreName: string) {
             error.statusCode = 404;
             throw error;
         }
-        return omit(movies, 'result');
+        return movies;
     } catch (error: any) {
         throw error;
     }
