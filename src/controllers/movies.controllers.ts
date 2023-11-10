@@ -1,53 +1,12 @@
-import { Request, Response, NextFunction } from 'express';
-import { Error } from '../app';
-import { Movie } from '../interfaces';
+import { NextFunction, Request, Response } from 'express';
 
-const mockedMovies: Movie[] = [
-    {
-        id: '1',
-        title: 'The Shawshank Redemption',
-        description:
-            'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
-        releaseDate: '1994-09-23',
-        genre: ['Drama', 'Crime'],
-    },
-    {
-        id: '2',
-        title: 'Inception',
-        description:
-            "A thief who enters the dreams of others to steal their secrets finds himself in a complex heist that involves planting an idea into a CEO's mind.",
-        releaseDate: '2010-07-16',
-        genre: ['Science Fiction', 'Action'],
-    },
-    {
-        id: '3',
-        title: 'The Godfather',
-        description:
-            'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
-        releaseDate: '1972-03-24',
-        genre: ['Drama', 'Crime'],
-    },
-    {
-        id: '4',
-        title: 'Forrest Gump',
-        description:
-            'The life story of Forrest Gump, a man with low intelligence, who inadvertently influences many historical events in the United States.',
-        releaseDate: '1994-07-06',
-        genre: ['Drama', 'Comedy'],
-    },
-    {
-        id: '5',
-        title: 'Avatar',
-        description:
-            'A paraplegic marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.',
-        releaseDate: '2009-12-18',
-        genre: ['Science Fiction', 'Action'],
-    },
-];
+import { createMovie, deleteMovie, getMovie, getMovies, getMoviesByGenre, updateMovie } from '../services';
+import { logger, validationCheck } from '../utils';
 
 export async function getMoviesHandler(req: Request, res: Response, next: NextFunction) {
     try {
-        res.status(200).json({ message: 'Fetched movies successfully', result: mockedMovies });
+        const movies = await getMovies();
+        res.status(200).json({ message: 'Fetched movies successfully', result: movies });
     } catch (error) {
         next(error);
     }
@@ -55,15 +14,52 @@ export async function getMoviesHandler(req: Request, res: Response, next: NextFu
 
 export async function getMovieHandler(req: Request, res: Response, next: NextFunction) {
     try {
+        validationCheck(req);
         const movieId = req.params.movieId;
-        const movie = mockedMovies.find(movie => movie.id === movieId);
-        if (movie) {
-            res.status(200).json({ message: 'Fetched movie successfully', result: movie });
-        } else {
-            const error: Error = new Error('Could not find movie.');
-            error.statusCode = 404;
-            throw error;
-        }
+        const movie = await getMovie(movieId);
+        res.status(200).json({ message: 'Fetched movie successfully', result: movie });
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function createMovieHandler(req: Request, res: Response, next: NextFunction) {
+    try {
+        validationCheck(req);
+        const movie = await createMovie(req.body);
+        logger.info('New movie created');
+        return res.status(201).json({ message: `Movie successfully created`, result: movie });
+    } catch (error: any) {
+        next(error);
+    }
+}
+
+export async function updateMovieHandler(req: Request, res: Response, next: NextFunction) {
+    try {
+        validationCheck(req);
+        const movie = await updateMovie(req.params.movieId, req.body);
+        logger.info('The movie was updated');
+        return res.status(200).json({ message: `Movie successfully updated`, result: movie });
+    } catch (error: any) {
+        next(error);
+    }
+}
+
+export async function deleteMovieHandler(req: Request, res: Response, next: NextFunction) {
+    try {
+        validationCheck(req);
+        await deleteMovie(req.params.movieId);
+        res.status(200).json({ message: 'Movie deleted.' });
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function findMoviesByGenreHandler(req: Request, res: Response, next: NextFunction) {
+    try {
+        validationCheck(req);
+        const movies = await getMoviesByGenre(req.params.genreName);
+        res.status(200).json({ message: 'Fetched movie successfully.', movies });
     } catch (error) {
         next(error);
     }

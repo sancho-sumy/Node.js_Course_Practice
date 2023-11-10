@@ -1,7 +1,8 @@
+import { Application, Request, Response } from 'express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi, { SwaggerOptions } from 'swagger-ui-express';
-import logger from './logger.utils';
-import { Request, Response, Application } from 'express';
+
+import logger from './logger.util';
 
 const options: SwaggerOptions = {
     definition: {

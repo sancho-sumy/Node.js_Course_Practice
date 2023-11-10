@@ -1,8 +1,8 @@
 import express, { Router } from 'express';
 
-import { getStatusHandler } from '../controllers/health.controllers';
+import { getStatusHandler } from '../controllers';
 
-const router: Router = express.Router();
+export const router: Router = express.Router();
 
 /**
  * @openapi
@@ -22,5 +22,3 @@ const router: Router = express.Router();
  *               "result": "OK"
  */
 router.get('/', getStatusHandler);
-
-export default router;
