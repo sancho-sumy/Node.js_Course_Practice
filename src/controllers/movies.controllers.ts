@@ -59,7 +59,7 @@ export async function findMoviesByGenreHandler(req: Request, res: Response, next
     try {
         validationCheck(req);
         const movies = await getMoviesByGenre(req.params.genreName);
-        res.status(200).json({ message: 'Fetched movie successfully.', movies });
+        res.status(200).json({ message: 'Fetched movies successfully.', movies });
     } catch (error) {
         next(error);
     }
