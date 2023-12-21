@@ -31,7 +31,6 @@ export async function createGenreHandler(req: Request, res: Response, next: Next
         return res.status(201).json({ message: `Genre successfully created`, result: genre });
     } catch (error: any) {
         next(error);
-        console.log(error);
     }
 }
 

@@ -37,7 +37,7 @@ export async function updateGenre(genreId: string, { name }: Genre) {
     try {
         const genre = await GenreModel.findById(genreId, 'name');
         if (!genre) {
-            const error: CustomError = new Error('Could not find post.');
+            const error: CustomError = new Error('Could not find genre.');
             error.statusCode = 404;
             throw error;
         }
